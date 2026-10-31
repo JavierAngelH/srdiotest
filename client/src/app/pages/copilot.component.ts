@@ -10,67 +10,46 @@ import { ZapService } from '../services/zap.service';
   standalone: true,
   imports: [CommonModule, FormsModule, RouterLink],
   template: `
-    <p><a routerLink="/">← Back</a></p>
-    <h1>Zap Copilot</h1>
-    <p class="muted">
-      Describe a workflow in plain English. We’ll draft a Zap you can review and enable.
-    </p>
+    <header class="topbar">
+      <a routerLink="/" class="brand">srdiotest</a>
+    </header>
 
-    <label>
-      Prompt
-      <textarea
-        rows="3"
-        [(ngModel)]="prompt"
-        placeholder="When a PR is opened, comment thanks @{{ '{{sender}}' }}"
-      ></textarea>
-    </label>
+    <section class="panel">
+      <a routerLink="/" class="back">← Back to Zaps</a>
+      <h1 class="page-title">Zap Copilot</h1>
+      <p class="muted" style="max-width: 36rem">
+        Describe a workflow in plain English. Copilot drafts a Zap into the normal create form —
+        you review it, then turn it on. It never runs until you enable and save.
+      </p>
 
-    <button type="button" class="primary" (click)="draft()" [disabled]="busy()">
-      {{ busy() ? 'Drafting…' : 'Draft Zap' }}
-    </button>
+      <ol class="steps">
+        <li>You type something like “When a PR is opened, comment thanks.”</li>
+        <li>Server parses that into the same Zap JSON shape (trigger + action + mapping).</li>
+        <li>You land on New Zap with fields filled — edit if needed, enable, save.</li>
+        <li>Execution is unchanged: webhook → matching Zap → GitHub comment.</li>
+      </ol>
 
-    @if (error()) {
-      <p class="err">{{ error() }}</p>
-    }
-    @if (note()) {
-      <p class="note">{{ note() }}</p>
-    }
+      <label class="field" style="max-width: 36rem; margin-bottom: 1rem">
+        Prompt
+        <textarea
+          rows="3"
+          [(ngModel)]="prompt"
+          placeholder="When a PR is opened, comment thanks @{{ '{{sender}}' }}"
+        ></textarea>
+      </label>
+
+      <button type="button" class="btn btn-accent" (click)="draft()" [disabled]="busy()">
+        {{ busy() ? 'Drafting…' : 'Draft Zap' }}
+      </button>
+
+      @if (error()) {
+        <p class="err">{{ error() }}</p>
+      }
+      @if (note()) {
+        <p class="muted" style="margin-top: 0.75rem">{{ note() }}</p>
+      }
+    </section>
   `,
-  styles: [
-    `
-      label {
-        display: flex;
-        flex-direction: column;
-        gap: 0.35rem;
-        max-width: 36rem;
-        margin-bottom: 1rem;
-      }
-      textarea {
-        font: inherit;
-        padding: 0.5rem;
-        border: 1px solid #ccc;
-        border-radius: 6px;
-      }
-      .primary {
-        background: #24292f;
-        color: #fff;
-        border: none;
-        padding: 0.55rem 0.9rem;
-        border-radius: 6px;
-        cursor: pointer;
-        font: inherit;
-      }
-      .muted {
-        color: #666;
-      }
-      .err {
-        color: #a11;
-      }
-      .note {
-        color: #0550ae;
-      }
-    `,
-  ],
 })
 export class CopilotComponent implements OnInit {
   prompt = 'When a pull request is opened, comment "Thanks @{{sender}} — on it."';

@@ -16,159 +16,103 @@ import { AuthService } from '../services/auth.service';
   standalone: true,
   imports: [CommonModule, FormsModule, RouterLink],
   template: `
-    <p><a routerLink="/">← Back</a></p>
-    <h1>{{ isNew() ? 'New Zap' : 'Edit Zap' }}</h1>
+    <header class="topbar">
+      <a routerLink="/" class="brand">srdiotest</a>
+    </header>
 
-    @if (error()) {
-      <p class="err">{{ error() }}</p>
-    }
+    <section class="panel">
+      <a routerLink="/" class="back">← Back to Zaps</a>
+      <h1 class="page-title">{{ isNew() ? 'New Zap' : 'Edit Zap' }}</h1>
 
-    <form (ngSubmit)="save()" class="form">
-      <label>
-        Name
-        <input name="name" [(ngModel)]="model.name" required />
-      </label>
+      @if (error()) {
+        <p class="err">{{ error() }}</p>
+      }
 
-      <label class="row">
-        <input type="checkbox" name="enabled" [(ngModel)]="model.enabled" />
-        Enabled
-      </label>
-
-      <fieldset>
-        <legend>Trigger</legend>
-        <label>
-          App
-          <select
-            name="triggerApp"
-            [(ngModel)]="model.trigger.app"
-            (ngModelChange)="onTriggerAppChange()"
-          >
-            @for (a of apps; track a.id) {
-              <option [value]="a.id">{{ a.name }}{{ a.real ? '' : ' (stub)' }}</option>
-            }
-          </select>
+      <form (ngSubmit)="save()" class="stack-form" style="margin-top: 1rem">
+        <label class="field">
+          Name
+          <input name="name" [(ngModel)]="model.name" required />
         </label>
-        <label>
-          Event
-          <select name="triggerEvent" [(ngModel)]="model.trigger.event">
-            @for (t of triggerOptions(); track t.event) {
-              <option [value]="t.event">{{ t.label }}</option>
-            }
-          </select>
-        </label>
-        @if (model.trigger.app !== 'github') {
-          <p class="warn">Stub app — will not execute.</p>
-        }
-      </fieldset>
 
-      <fieldset>
-        <legend>Action</legend>
-        <label>
-          App
-          <select
-            name="actionApp"
-            [(ngModel)]="model.action.app"
-            (ngModelChange)="onActionAppChange()"
-          >
-            @for (a of apps; track a.id) {
-              <option [value]="a.id">{{ a.name }}{{ a.real ? '' : ' (stub)' }}</option>
-            }
-          </select>
+        <label class="field row">
+          <input type="checkbox" name="enabled" [(ngModel)]="model.enabled" />
+          Enabled
         </label>
-        <label>
-          Type
-          <select name="actionType" [(ngModel)]="model.action.type">
-            @for (t of actionOptions(); track t.type) {
-              <option [value]="t.type">{{ t.label }}</option>
-            }
-          </select>
-        </label>
-        <label>
-          Comment body
-          <textarea
-            name="body"
-            rows="4"
-            [(ngModel)]="model.action.mapping['body']"
-            placeholder="Thanks @{{ '{{sender}}' }}!"
-          ></textarea>
-        </label>
-        <p class="hint">
-          Templates: <code>{{ '{{sender}}' }}</code>, <code>{{ '{{repo}}' }}</code>,
-          <code>{{ '{{owner}}' }}</code>, <code>{{ '{{number}}' }}</code>,
-          <code>{{ '{{title}}' }}</code>
-        </p>
-        @if (model.action.app !== 'github') {
-          <p class="warn">Stub app — will not execute.</p>
-        }
-      </fieldset>
 
-      <button type="submit" class="primary" [disabled]="saving()">
-        {{ saving() ? 'Saving…' : 'Save Zap' }}
-      </button>
-    </form>
+        <fieldset class="block">
+          <legend>Trigger</legend>
+          <label class="field">
+            App
+            <select
+              name="triggerApp"
+              [(ngModel)]="model.trigger.app"
+              (ngModelChange)="onTriggerAppChange()"
+            >
+              @for (a of apps; track a.id) {
+                <option [value]="a.id">{{ a.name }}{{ a.real ? '' : ' (stub)' }}</option>
+              }
+            </select>
+          </label>
+          <label class="field">
+            Event
+            <select name="triggerEvent" [(ngModel)]="model.trigger.event">
+              @for (t of triggerOptions(); track t.event) {
+                <option [value]="t.event">{{ t.label }}</option>
+              }
+            </select>
+          </label>
+          @if (model.trigger.app !== 'github') {
+            <p class="warn">Stub app — will not execute.</p>
+          }
+        </fieldset>
+
+        <fieldset class="block">
+          <legend>Action</legend>
+          <label class="field">
+            App
+            <select
+              name="actionApp"
+              [(ngModel)]="model.action.app"
+              (ngModelChange)="onActionAppChange()"
+            >
+              @for (a of apps; track a.id) {
+                <option [value]="a.id">{{ a.name }}{{ a.real ? '' : ' (stub)' }}</option>
+              }
+            </select>
+          </label>
+          <label class="field">
+            Type
+            <select name="actionType" [(ngModel)]="model.action.type">
+              @for (t of actionOptions(); track t.type) {
+                <option [value]="t.type">{{ t.label }}</option>
+              }
+            </select>
+          </label>
+          <label class="field">
+            Comment body
+            <textarea
+              name="body"
+              rows="4"
+              [(ngModel)]="model.action.mapping['body']"
+              placeholder="Thanks @{{ '{{sender}}' }}!"
+            ></textarea>
+          </label>
+          <p class="hint">
+            Templates: <code>{{ '{{sender}}' }}</code>, <code>{{ '{{repo}}' }}</code>,
+            <code>{{ '{{owner}}' }}</code>, <code>{{ '{{number}}' }}</code>,
+            <code>{{ '{{title}}' }}</code>
+          </p>
+          @if (model.action.app !== 'github') {
+            <p class="warn">Stub app — will not execute.</p>
+          }
+        </fieldset>
+
+        <button type="submit" class="btn btn-primary" [disabled]="saving()">
+          {{ saving() ? 'Saving…' : 'Save Zap' }}
+        </button>
+      </form>
+    </section>
   `,
-  styles: [
-    `
-      .form {
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-        max-width: 32rem;
-      }
-      label {
-        display: flex;
-        flex-direction: column;
-        gap: 0.35rem;
-        font-size: 0.9rem;
-      }
-      label.row {
-        flex-direction: row;
-        align-items: center;
-      }
-      input,
-      select,
-      textarea {
-        font: inherit;
-        padding: 0.45rem 0.55rem;
-        border: 1px solid #ccc;
-        border-radius: 6px;
-      }
-      fieldset {
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        padding: 0.85rem;
-        display: flex;
-        flex-direction: column;
-        gap: 0.75rem;
-      }
-      .hint {
-        font-size: 0.8rem;
-        color: #666;
-        margin: 0;
-      }
-      .warn {
-        color: #9a6700;
-        font-size: 0.85rem;
-        margin: 0;
-      }
-      .err {
-        color: #a11;
-      }
-      .primary {
-        background: #24292f;
-        color: #fff;
-        border: none;
-        padding: 0.55rem 0.9rem;
-        border-radius: 6px;
-        cursor: pointer;
-        font: inherit;
-        align-self: flex-start;
-      }
-      .primary:disabled {
-        opacity: 0.6;
-      }
-    `,
-  ],
 })
 export class ZapEditorComponent implements OnInit {
   apps = APPS;
