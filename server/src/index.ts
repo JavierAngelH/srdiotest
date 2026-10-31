@@ -5,6 +5,7 @@ import mongoose from 'mongoose';
 import { config } from './config';
 import authRoutes, { meHandler } from './routes/auth';
 import { requireAuth } from './middleware/auth';
+import zapRoutes from './routes/zaps';
 
 async function main() {
   await mongoose.connect(config.mongoUri);
@@ -18,6 +19,7 @@ async function main() {
   app.get('/health', (_req, res) => res.json({ ok: true }));
   app.use('/auth', authRoutes);
   app.get('/api/me', requireAuth, meHandler);
+  app.use('/api/zaps', zapRoutes);
 
   app.listen(config.port, () => {
     console.log(`API listening on http://localhost:${config.port}`);
