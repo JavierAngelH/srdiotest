@@ -1,6 +1,6 @@
 # srdiotest — tiny Zapier-style workflows (MEAN + TypeScript)
 
-**Clock notes:** Started: 2026-10-31 ~12:14 local · Stopped: 2026-10-31 ~12:54 local (must-have Zap proven E2E)
+**Clock notes:** Started: 2026-10-31 ~12:14 local · Stopped: 2026-10-31 ~13:05 local (must-have Zap proven E2E; bonus Copilot + UI polish)
 
 Design / milestone notes for the follow-up: see [`WALKTHROUGH.md`](./WALKTHROUGH.md).
 

@@ -1,6 +1,6 @@
 # Walkthrough (what we shipped & why)
 
-Session clock: ~12:14–12:54 local on 2026-10-31. Built with AI assistance; milestones match `git log` on `feature/zap-mvp`.
+Session clock: ~12:14–13:05 local on 2026-10-31. Built with AI assistance; milestones match `git log` on `feature/zap-mvp`.
 
 ## Product shape
 
