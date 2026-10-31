@@ -12,3 +12,5 @@ coverage/
 *.tsbuildinfo
 .cloudflared/
 tunnel-url.txt
+# Personal follow-up prep (not for the take-home reviewers)
+prep/
