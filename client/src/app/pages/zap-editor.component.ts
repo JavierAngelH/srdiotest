@@ -88,7 +88,7 @@ import { AuthService } from '../services/auth.service';
           <textarea
             name="body"
             rows="4"
-            [(ngModel)]="model.action.mapping.body"
+            [(ngModel)]="model.action.mapping['body']"
             placeholder="Thanks @{{ '{{sender}}' }}!"
           ></textarea>
         </label>
