@@ -1,6 +1,6 @@
 # srdiotest — tiny Zapier-style workflows (MEAN + TypeScript)
 
-**Clock notes:** Started: 2026-10-31 ~12:14 local · Stopped: _(fill when done)_
+**Clock notes:** Started: 2026-10-31 ~12:14 local · Stopped: 2026-10-31 ~12:54 local (must-have Zap proven E2E)
 
 Small workflow automation demo: sign in with GitHub, create Zaps owned by you, and run one real path — **GitHub PR opened → comment on that PR**. Other apps in the picker are stubs. Built for a ~4 hour take-home; prefer a working demo over polish.
 
