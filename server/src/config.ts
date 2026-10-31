@@ -15,4 +15,6 @@ export const config = {
   openaiApiKey: process.env.OPENAI_API_KEY || '',
   /** Google AI Studio key (https://aistudio.google.com/apikey) — preferred Copilot LLM */
   geminiApiKey: process.env.GEMINI_API_KEY || process.env.GOOGLE_AI_API_KEY || '',
+  /** Some Studio keys hang on newer aliases; 3.6-flash is a reliable default. */
+  geminiModel: process.env.GEMINI_MODEL || 'gemini-3.6-flash',
 };

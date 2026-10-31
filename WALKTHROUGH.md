@@ -1,6 +1,6 @@
 # Walkthrough (what we shipped & why)
 
-Session clock: ~12:14–13:48 local on 2026-10-31. Built with AI assistance; milestones match `git log`.
+Session clock: ~12:14–13:53 local on 2026-10-31. Built with AI assistance; milestones match `git log`.
 
 ## Product shape
 

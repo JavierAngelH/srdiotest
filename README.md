@@ -1,6 +1,6 @@
 # srdiotest — tiny Zapier-style workflows (MEAN + TypeScript)
 
-**Clock notes:** Started: 2026-10-31 ~12:14 local · Stopped: 2026-10-31 ~13:48 local
+**Clock notes:** Started: 2026-10-31 ~12:14 local · Stopped: 2026-10-31 ~13:53 local
 
 Design / milestone notes for the follow-up: see [`WALKTHROUGH.md`](./WALKTHROUGH.md).
 
@@ -27,6 +27,7 @@ Copy `.env.example` → `.env` at the **repo root** (the server loads root `.env
 | `GITHUB_CLIENT_SECRET` | OAuth App client secret |
 | `GITHUB_WEBHOOK_SECRET` | Shared secret for `X-Hub-Signature-256` |
 | `GEMINI_API_KEY` | Optional Google AI Studio key — Copilot uses Gemini when set |
+| `GEMINI_MODEL` | Optional (default `gemini-3.6-flash`) |
 | `OPENAI_API_KEY` | Optional OpenAI key (used if Gemini unset / fails) |
 | *(neither LLM key)* | Copilot falls back to rule-based parse |
 

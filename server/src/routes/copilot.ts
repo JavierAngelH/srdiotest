@@ -96,32 +96,35 @@ router.post('/draft', async (req: AuthRequest, res: Response) => {
   res.json(parseZapIntent(prompt));
 });
 
-/** Google AI Studio — OpenAI-compatible chat completions endpoint. */
+/** Google AI Studio — native generateContent (JSON response). */
 async function draftWithGemini(prompt: string) {
-  const res = await fetch(
-    'https://generativelanguage.googleapis.com/v1beta/openai/chat/completions',
-    {
+  const model = encodeURIComponent(config.geminiModel);
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${encodeURIComponent(config.geminiApiKey)}`;
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 45000);
+  try {
+    const res = await fetch(url, {
       method: 'POST',
-      headers: {
-        Authorization: `Bearer ${config.geminiApiKey}`,
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
+      signal: controller.signal,
       body: JSON.stringify({
-        model: 'gemini-2.0-flash',
-        response_format: { type: 'json_object' },
-        messages: [
-          { role: 'system', content: ZAP_SYSTEM },
-          { role: 'user', content: prompt },
-        ],
+        systemInstruction: { parts: [{ text: ZAP_SYSTEM }] },
+        contents: [{ role: 'user', parts: [{ text: prompt }] }],
+        generationConfig: {
+          responseMimeType: 'application/json',
+          temperature: 0.4,
+        },
       }),
-    }
-  );
-  if (!res.ok) throw new Error(await res.text());
-  const data = (await res.json()) as any;
-  const content = data.choices?.[0]?.message?.content;
-  if (!content) throw new Error('Gemini returned empty content');
-  const parsed = typeof content === 'string' ? JSON.parse(content) : content;
-  return normalizeDraft(parsed, 'gemini');
+    });
+    if (!res.ok) throw new Error(await res.text());
+    const data = (await res.json()) as any;
+    const content = data.candidates?.[0]?.content?.parts?.map((p: any) => p.text || '').join('') || '';
+    if (!content) throw new Error('Gemini returned empty content');
+    const parsed = JSON.parse(content);
+    return normalizeDraft(parsed, 'gemini');
+  } finally {
+    clearTimeout(timer);
+  }
 }
 
 async function draftWithOpenAI(prompt: string) {
