@@ -3,6 +3,8 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import mongoose from 'mongoose';
 import { config } from './config';
+import authRoutes, { meHandler } from './routes/auth';
+import { requireAuth } from './middleware/auth';
 
 async function main() {
   await mongoose.connect(config.mongoUri);
@@ -14,6 +16,8 @@ async function main() {
   app.use(express.json());
 
   app.get('/health', (_req, res) => res.json({ ok: true }));
+  app.use('/auth', authRoutes);
+  app.get('/api/me', requireAuth, meHandler);
 
   app.listen(config.port, () => {
     console.log(`API listening on http://localhost:${config.port}`);
