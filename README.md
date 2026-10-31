@@ -9,8 +9,7 @@ Small workflow automation demo: sign in with GitHub, create Zaps owned by you, a
 - Node.js 20+ (22/26 may warn on Angular CLI but work for this demo)
 - MongoDB running locally (`mongod`)
 - A GitHub OAuth App (see below)
-- Cloudflare Tunnel (`cloudflared`) for webhook reachability — preferred over ngrok  
-  `brew install cloudflare/cloudflare/cloudflared`
+- A public tunnel to the API for GitHub webhooks: **ngrok** or Cloudflare Tunnel (`cloudflared`)
 
 ## Env vars
 
@@ -51,11 +50,19 @@ Scopes requested at runtime: `read:user`, `repo` (needed to comment on PRs you c
 
 ## Tunnel + repo webhook
 
+**ngrok** (this repo’s default for local demos):
+
+```bash
+ngrok http 3000
+```
+
+Copy the `https://….ngrok-free.app` (or `.ngrok.io`) forwarding URL from the ngrok UI/CLI. Do not commit it.
+
+**Or Cloudflare Tunnel:**
+
 ```bash
 cloudflared tunnel --url http://localhost:3000
 ```
-
-Copy the printed `https://….trycloudflare.com` URL (do not commit it).
 
 On a **repo you control**: Settings → Webhooks → Add webhook
 
