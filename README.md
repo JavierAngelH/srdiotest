@@ -2,6 +2,8 @@
 
 **Clock notes:** Started: 2026-10-31 ~12:14 local · Stopped: 2026-10-31 ~12:54 local (must-have Zap proven E2E)
 
+Design / milestone notes for the follow-up: see [`WALKTHROUGH.md`](./WALKTHROUGH.md).
+
 Small workflow automation demo: sign in with GitHub, create Zaps owned by you, and run one real path — **GitHub PR opened → comment on that PR**. Other apps in the picker are stubs. Built for a ~4 hour take-home; prefer a working demo over polish.
 
 ## Prerequisites
