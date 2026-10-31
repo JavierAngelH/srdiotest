@@ -35,6 +35,7 @@ import { Zap, ZapService } from '../services/zap.service';
         <h1>Your Zaps</h1>
         <div class="actions">
           <a routerLink="/zaps/new" class="primary">New Zap</a>
+          <a routerLink="/copilot" class="secondary">Copilot</a>
         </div>
       </section>
 

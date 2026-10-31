@@ -7,6 +7,7 @@ import authRoutes, { meHandler } from './routes/auth';
 import { requireAuth } from './middleware/auth';
 import zapRoutes from './routes/zaps';
 import webhookRoutes from './routes/webhooks';
+import copilotRoutes from './routes/copilot';
 
 async function main() {
   await mongoose.connect(config.mongoUri);
@@ -36,6 +37,7 @@ async function main() {
   app.use('/auth', authRoutes);
   app.get('/api/me', requireAuth, meHandler);
   app.use('/api/zaps', zapRoutes);
+  app.use('/api/copilot', copilotRoutes);
   app.use('/webhooks', webhookRoutes);
 
   app.listen(config.port, () => {
