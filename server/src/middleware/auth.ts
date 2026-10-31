@@ -11,6 +11,15 @@ interface JwtPayload {
   userId: string;
 }
 
+export const SESSION_COOKIE = 'token';
+
+export const sessionCookieOptions = {
+  httpOnly: true,
+  sameSite: 'lax' as const,
+  path: '/',
+  maxAge: 7 * 24 * 60 * 60 * 1000,
+};
+
 export function signToken(userId: string): string {
   return jwt.sign({ userId }, config.jwtSecret, { expiresIn: '7d' });
 }
@@ -18,7 +27,7 @@ export function signToken(userId: string): string {
 export async function requireAuth(req: AuthRequest, res: Response, next: NextFunction) {
   try {
     const header = req.headers.authorization;
-    const cookieToken = (req as any).cookies?.token as string | undefined;
+    const cookieToken = (req as any).cookies?.[SESSION_COOKIE] as string | undefined;
     const token = header?.startsWith('Bearer ') ? header.slice(7) : cookieToken;
 
     if (!token) {
