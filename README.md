@@ -1,6 +1,6 @@
 # srdiotest — tiny Zapier-style workflows (MEAN + TypeScript)
 
-**Clock notes:** Started: 2026-10-31 ~12:14 local · Must-have E2E: ~13:05 · Follow-up cleanup: ~13:14–13:30 (Copilot draft bug, cookie-only session, auth guard, tests)
+**Clock notes:** Started: 2026-10-31 ~12:14 local · Stopped: 2026-10-31 ~13:31 local
 
 Design / milestone notes for the follow-up: see [`WALKTHROUGH.md`](./WALKTHROUGH.md).
 

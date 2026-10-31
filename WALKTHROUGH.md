@@ -1,6 +1,6 @@
 # Walkthrough (what we shipped & why)
 
-Session clock: ~12:14–13:05 local on 2026-10-31 (must-have E2E). Leftover-time pass ~13:14–13:30 on `fix/follow-up-cleanup`. Built with AI assistance; milestones match `git log`.
+Session clock: ~12:14–13:31 local on 2026-10-31. Built with AI assistance; milestones match `git log`.
 
 ## Product shape
 
@@ -18,7 +18,7 @@ Session clock: ~12:14–13:05 local on 2026-10-31 (must-have E2E). Leftover-time
 4. Webhook signature verify + PR comment action
 5. Copilot draft endpoint/UI
 6. Docs (OAuth, ngrok/tunnel, demo) + E2E proof on a real PR
-7. Leftover time: Copilot draft actually fills `/zaps/new`, cookie-only session (no JWT in the query string), Angular `authGuard`, tests for signature + template + NL parse
+7. After testing that first version: Copilot draft actually fills `/zaps/new`, cookie-only session, Angular `authGuard`, tests for signature + template + NL parse
 
 ## Notable decisions
 
@@ -31,9 +31,9 @@ Session clock: ~12:14–13:05 local on 2026-10-31 (must-have E2E). Leftover-time
 
 Webhook on `JavierAngelH/pdf-transfer-agent` → [PR #1](https://github.com/JavierAngelH/pdf-transfer-agent/pull/1) received the configured comment; delivery HTTP 200.
 
-## Leftover-time pass (what I noticed after E2E)
+## After testing the first version
 
-After the live PR comment worked I still had time on the honor-system clock, so I fixed issues I found walking the Copilot and auth paths — not a second product:
+The live PR comment worked; walking Copilot and the OAuth callback turned up a few things to clean up:
 
 - Copilot wrote `sessionStorage` then navigated to `/zaps/new`, but the editor only applied the draft when `paramMap.id === 'new'`. That route has no `:id`, so the form stayed on defaults.
 - OAuth redirected to `/?token=...` *and* set an httpOnly cookie *and* Angular stored the JWT in `localStorage`. Query tokens leak via history/logs. Session is cookie-only now; `/api/me` with credentials is the source of truth.
