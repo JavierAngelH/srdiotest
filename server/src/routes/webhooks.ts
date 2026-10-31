@@ -1,30 +1,22 @@
 import { Router, Request, Response } from 'express';
-import crypto from 'crypto';
 import { config } from '../config';
 import { User } from '../models/User';
 import { Zap } from '../models/Zap';
 import { createIssueComment, renderTemplate } from '../services/github';
+import { verifyGitHubSignature } from '../services/webhookSignature';
 
 const router = Router();
 
-function verifySignature(rawBody: Buffer, signatureHeader: string | undefined): boolean {
-  if (!config.githubWebhookSecret) return false;
-  if (!signatureHeader?.startsWith('sha256=')) return false;
-  const expected = crypto
-    .createHmac('sha256', config.githubWebhookSecret)
-    .update(rawBody)
-    .digest('hex');
-  const received = signatureHeader.slice('sha256='.length);
-  try {
-    return crypto.timingSafeEqual(Buffer.from(expected), Buffer.from(received));
-  } catch {
-    return false;
-  }
-}
-
 router.post('/github', async (req: Request, res: Response) => {
   const rawBody = (req as any).rawBody as Buffer | undefined;
-  if (!rawBody || !verifySignature(rawBody, req.header('X-Hub-Signature-256') || undefined)) {
+  if (
+    !rawBody ||
+    !verifyGitHubSignature(
+      rawBody,
+      req.header('X-Hub-Signature-256') || undefined,
+      config.githubWebhookSecret
+    )
+  ) {
     return res.status(401).json({ error: 'Invalid signature' });
   }
 
