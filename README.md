@@ -1,6 +1,6 @@
 # srdiotest — tiny Zapier-style workflows (MEAN + TypeScript)
 
-**Clock notes:** Started: 2026-10-31 ~12:14 local · Stopped: 2026-10-31 ~13:45 local
+**Clock notes:** Started: 2026-10-31 ~12:14 local · Stopped: 2026-10-31 ~13:48 local
 
 Design / milestone notes for the follow-up: see [`WALKTHROUGH.md`](./WALKTHROUGH.md).
 
@@ -26,7 +26,9 @@ Copy `.env.example` → `.env` at the **repo root** (the server loads root `.env
 | `GITHUB_CLIENT_ID` | OAuth App client id |
 | `GITHUB_CLIENT_SECRET` | OAuth App client secret |
 | `GITHUB_WEBHOOK_SECRET` | Shared secret for `X-Hub-Signature-256` |
-| `OPENAI_API_KEY` | Optional; Copilot uses rule-based parse without it |
+| `GEMINI_API_KEY` | Optional Google AI Studio key — Copilot uses Gemini when set |
+| `OPENAI_API_KEY` | Optional OpenAI key (used if Gemini unset / fails) |
+| *(neither LLM key)* | Copilot falls back to rule-based parse |
 
 ## How to run
 
@@ -95,8 +97,10 @@ On a **repo you control**: Settings → Webhooks → Add webhook
 | Zap CRUD (list/create/edit/toggle) | Real |
 | GitHub PR opened → comment | Real |
 | Slack / Linear / Jira / Notion in picker | Stub (UI only; saved config will not execute) |
-| Copilot (NL → Zap draft) | Real draft path (rule-based; optional OpenAI) — execution unchanged |
+| Copilot (NL → Zap draft) | Real draft path (Gemini / OpenAI / rule-based fallback) — execution unchanged |
 
 ## Copilot
 
-`/copilot` (or API `POST /api/copilot/draft`) turns a sentence like “When a PR is opened, comment thanks” into the same Zap shape. You land on the create form, review, then enable. Without `OPENAI_API_KEY`, parsing is rule-based.
+`/copilot` (or API `POST /api/copilot/draft`) turns a sentence like “When a PR is opened, comment thanks” into the same Zap shape. You land on the create form, review, then enable.
+
+Priority: `GEMINI_API_KEY` (Google AI Studio) → `OPENAI_API_KEY` → rule-based parse. Execution never changes — Copilot only fills the form.

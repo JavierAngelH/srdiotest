@@ -13,4 +13,6 @@ export const config = {
   githubClientSecret: process.env.GITHUB_CLIENT_SECRET || '',
   githubWebhookSecret: process.env.GITHUB_WEBHOOK_SECRET || '',
   openaiApiKey: process.env.OPENAI_API_KEY || '',
+  /** Google AI Studio key (https://aistudio.google.com/apikey) — preferred Copilot LLM */
+  geminiApiKey: process.env.GEMINI_API_KEY || process.env.GOOGLE_AI_API_KEY || '',
 };

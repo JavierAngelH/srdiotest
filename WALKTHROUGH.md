@@ -1,6 +1,6 @@
 # Walkthrough (what we shipped & why)
 
-Session clock: ~12:14–13:45 local on 2026-10-31. Built with AI assistance; milestones match `git log`.
+Session clock: ~12:14–13:48 local on 2026-10-31. Built with AI assistance; milestones match `git log`.
 
 ## Product shape
 
@@ -8,7 +8,7 @@ Session clock: ~12:14–13:45 local on 2026-10-31. Built with AI assistance; mil
 - **Zap** = `{ name, enabled, trigger, action(+mapping) }`, scoped to `userId`.
 - **Must-have path:** GitHub webhook `pull_request` + `opened` → find enabled GitHub→comment Zaps for the PR author → `POST .../issues/{n}/comments` with mapped body (`{{sender}}`, etc.).
 - **Stub apps** (Slack, Linear, Jira, Notion) appear in the picker but have no executor.
-- **Copilot (bonus):** `POST /api/copilot/draft` (rule-based; optional OpenAI) → same Zap shape → create form → user enables.
+- **Copilot (bonus):** `POST /api/copilot/draft` (Gemini via Google AI Studio when `GEMINI_API_KEY` is set; else OpenAI; else rules) → same Zap shape → create form → user enables.
 
 ## Milestone order (also the commit story)
 
