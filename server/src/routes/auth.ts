@@ -1,7 +1,13 @@
 import { Router, Response } from 'express';
 import { config } from '../config';
 import { User } from '../models/User';
-import { requireAuth, signToken, AuthRequest } from '../middleware/auth';
+import {
+  requireAuth,
+  signToken,
+  AuthRequest,
+  SESSION_COOKIE,
+  sessionCookieOptions,
+} from '../middleware/auth';
 
 const router = Router();
 
@@ -79,12 +85,8 @@ router.get('/github/callback', async (req, res) => {
     }
 
     const jwt = signToken(user.id);
-    res.cookie('token', jwt, {
-      httpOnly: true,
-      sameSite: 'lax',
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-    });
-    res.redirect(`${config.clientUrl}/?token=${encodeURIComponent(jwt)}`);
+    res.cookie(SESSION_COOKIE, jwt, sessionCookieOptions);
+    res.redirect(`${config.clientUrl}/`);
   } catch (err) {
     console.error('OAuth callback error', err);
     res.status(500).send('OAuth failed');
@@ -92,7 +94,7 @@ router.get('/github/callback', async (req, res) => {
 });
 
 router.post('/logout', (_req, res: Response) => {
-  res.clearCookie('token');
+  res.clearCookie(SESSION_COOKIE, { path: sessionCookieOptions.path, sameSite: sessionCookieOptions.sameSite });
   res.json({ ok: true });
 });
 

@@ -9,7 +9,6 @@ import {
   Zap,
   ZapService,
 } from '../services/zap.service';
-import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-zap-editor',
@@ -136,8 +135,7 @@ export class ZapEditorComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private zapsApi: ZapService,
-    private auth: AuthService
+    private zapsApi: ZapService
   ) {}
 
   triggerOptions() {
@@ -160,14 +158,13 @@ export class ZapEditorComponent implements OnInit {
   }
 
   async ngOnInit() {
-    await this.auth.refreshMe();
-    if (!this.auth.user()) {
-      this.router.navigateByUrl('/');
-      return;
-    }
+    const id = this.route.snapshot.paramMap.get('id');
+    const creating = !id || id === 'new';
+    this.isNew.set(creating);
 
+    // Copilot lands on /zaps/new (no :id). Apply the draft whenever this is a create.
     const draft = sessionStorage.getItem('zapDraft');
-    if (draft && this.route.snapshot.paramMap.get('id') === 'new') {
+    if (draft && creating) {
       try {
         this.model = { ...this.model, ...JSON.parse(draft) };
       } catch {
@@ -176,12 +173,9 @@ export class ZapEditorComponent implements OnInit {
       sessionStorage.removeItem('zapDraft');
     }
 
-    const id = this.route.snapshot.paramMap.get('id');
-    if (!id || id === 'new') {
-      this.isNew.set(true);
+    if (creating) {
       return;
     }
-    this.isNew.set(false);
     this.id = id;
     try {
       const zap = await this.zapsApi.get(id);

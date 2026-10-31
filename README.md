@@ -1,6 +1,6 @@
 # srdiotest — tiny Zapier-style workflows (MEAN + TypeScript)
 
-**Clock notes:** Started: 2026-10-31 ~12:14 local · Stopped: 2026-10-31 ~13:05 local (must-have Zap proven E2E; bonus Copilot + UI polish)
+**Clock notes:** Started: 2026-10-31 ~12:14 local · Stopped: 2026-10-31 ~13:31 local
 
 Design / milestone notes for the follow-up: see [`WALKTHROUGH.md`](./WALKTHROUGH.md).
 
@@ -38,7 +38,9 @@ cd server && npm install && npm run dev
 cd client && npm install && npm start
 ```
 
-Open http://localhost:4200 — Sign in with GitHub.
+Open http://localhost:4200 — Sign in with GitHub. The session is an **httpOnly cookie** on the API (`localhost:3000`); the Angular app sends it with `withCredentials` and never puts the JWT in the URL or `localStorage`.
+
+Optional: `cd server && npm test` (webhook signature + comment template + Copilot parse).
 
 ## GitHub OAuth App
 
