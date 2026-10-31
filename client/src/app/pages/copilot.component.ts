@@ -1,8 +1,7 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { AuthService } from '../services/auth.service';
 import { ZapService } from '../services/zap.service';
 
 @Component({
@@ -51,22 +50,16 @@ import { ZapService } from '../services/zap.service';
     </section>
   `,
 })
-export class CopilotComponent implements OnInit {
+export class CopilotComponent {
   prompt = 'When a pull request is opened, comment "Thanks @{{sender}} — on it."';
   busy = signal(false);
   error = signal('');
   note = signal('');
 
   constructor(
-    private auth: AuthService,
     private zaps: ZapService,
     private router: Router
   ) {}
-
-  async ngOnInit() {
-    await this.auth.refreshMe();
-    if (!this.auth.user()) this.router.navigateByUrl('/');
-  }
 
   async draft() {
     this.busy.set(true);
